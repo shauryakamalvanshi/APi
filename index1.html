@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body,
+      html {
+        display: flex;
+        justify-content: center;
+      }
+      .container {
+        display: flex;
+        justify-content: center;
+        margin-top: 50%;
+      }
+      .project-info {
+        padding: 25px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        position: relative;
+        top: -50px;
+      }
+
+      .project-title {
+        font-weight: 700;
+        font-size: 2em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: black;
+      }
+
+      .flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .account {
+        font-weight: bold;
+        width: 100px;
+        background-color: #1da1f2;
+        margin-top: 10px;
+        margin-left: 40%;
+        cursor: pointer;
+        color: white;
+      }
+
+      .tag {
+        font-weight: lighter;
+        color: grey;
+      }
+
+      /*DELETE THIS TWO LINE*/
+      .delete {
+        background-color: #1da1f2;
+      }
+
+      .card-img div {
+        width: 90%;
+        cursor: pointer;
+      }
+      /*IF USING IMAGES*/
+
+      .card {
+        background-color: white;
+        color: black;
+        width: 670px;
+        max-height: 550px;
+        border-radius: 8px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+          rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+      }
+
+      .card-img {
+        position: relative;
+        top: -50px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Change the .card-img div to .card-img img to use img*/
+      .card-img a,
+      .card-img div {
+        height: 100px;
+        width: 85%;
+        /* Change this width here to change the width of the color/image */
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+      }
+
+      .pv:hover {
+        transform: scale(1.12);
+      }
+
+      .card-imgs {
+        transition: all 0.5s;
+        display: flex;
+        justify-content: center;
+      }
+      .card-imgs img {
+        height: 80px;
+        width: 80px;
+      }
+      button {
+  cursor: pointer;
+  font-weight: 700;
+  font-family: Helvetica,"sans-serif";
+  transition: all .2s;
+  padding: 10px 20px;
+  border-radius: 100px;
+  background: #cfef00;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+}
+
+button:hover {
+  background: #1DA1F2;
+}
+
+button > svg {
+  width: 34px;
+  margin-left: 10px;
+  transition: transform .3s ease-in-out;
+}
+
+button:hover svg {
+  transform: translateX(5px);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <article class="card">
+        <div class="card-img" id="tweetMe">
+          <div class="card-imgs pv delete"><img src="twitter.png" /></div>
+        </div>
+        <div class="project-info">
+          <div class="flex">
+            <div class="project-title" id="author"></div>
+          </div>
+          <div >
+          <span id="quotes">
+          </span>
+        </div>
+          <!-- <a class="account">Project</a> -->
+          <!-- <button class="account" id="newQ">next</button> -->
+          <button class="account" id="newQ">
+            <span>Next</span>
+            <svg width="34" height="34" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="37" cy="37" r="35.5" stroke="black" stroke-width="3"></circle>
+                <path d="M25 35.5C24.1716 35.5 23.5 36.1716 23.5 37C23.5 37.8284 24.1716 38.5 25 38.5V35.5ZM49.0607 38.0607C49.6464 37.4749 49.6464 36.5251 49.0607 35.9393L39.5147 26.3934C38.9289 25.8076 37.9792 25.8076 37.3934 26.3934C36.8076 26.9792 36.8076 27.9289 37.3934 28.5147L45.8787 37L37.3934 45.4853C36.8076 46.0711 36.8076 47.0208 37.3934 47.6066C37.9792 48.1924 38.9289 48.1924 39.5147 47.6066L49.0607 38.0607ZM25 38.5L48 38.5V35.5L25 35.5V38.5Z" fill="black"></path>
+            </svg>
+        </button>
+        </div>
+      </article>
+    </div>
+
+    <script>
+        let realData = "";
+        let quotesData = {}; 
+        const quotes = document.getElementById("quotes");
+        const author = document.getElementById("author");
+        const newQ=document.getElementById("newQ");
+        const tweetMe=document.getElementById("tweetMe");
+  
+        const tweetNow=()=>{
+          let tweetPost = `https://twitter.com/intent/tweet?text=${encodeURIComponent(quotesData.text)}%0Aby%20${encodeURIComponent(quotesData.author)}`;
+          window.open(tweetPost);
+  
+        }
+  
+        const getNewQuotes = () => {
+          let rnum = Math.floor(Math.random() * 100);
+          quotesData=realData[rnum];
+          quotes.innerText=` ${quotesData.text}`;
+          author.innerText=` ${quotesData.author}`;
+        };
+  
+  
+  
+        const getQuotes = async () => {
+          const api = "https://type.fit/api/quotes";
+          try {
+            let data = await fetch(api);
+            realData = await data.json();
+            getNewQuotes();
+          } catch (err) {}
+        };
+  
+        tweetMe.addEventListener('click',tweetNow);
+  
+        newQ.addEventListener('click',getNewQuotes);
+        getQuotes();
+      </script>
+  </body>
+</html>
